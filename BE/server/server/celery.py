@@ -6,7 +6,9 @@ from celery import Celery
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 
-app = Celery('server')
+app = Celery('server', broker='redis://redis:6379/0',
+             backend='redis://redis:6379/0',
+             include=['app.tasks'])
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 

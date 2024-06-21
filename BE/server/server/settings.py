@@ -75,12 +75,15 @@ TEMPLATES = [
 
 # WSGI_APPLICATION = 'server.wsgi.application'
 
+REDIS_HOST = 'redis'
+REDIS_PORT = 6379
+
 ASGI_APPLICATION = 'server.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [(REDIS_HOST, 6379)],
         },
     },
 }
@@ -95,13 +98,14 @@ DATABASES = {
         'NAME': 'sjf',
         'USER': 'postgres',
         'PASSWORD': 'root123',
-        'HOST': 'localhost',  # Set to the host where your PostgreSQL server is running
+        'HOST': 'db',  # Set to the host where your PostgreSQL server is running
         'PORT': '5432',       # Set to the port used by your PostgreSQL server
+        'CONN_MAX_AGE': 30,
     }
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
